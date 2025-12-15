@@ -8,6 +8,7 @@ export default function LoginPage({ currentRoute, onNavigate, onLogin, onCreateA
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const brand = 'MARHAS'
   const bgLocal = '/assets/images/MENS.jfif'
   const bgFallback = '/assets/images/MENS.jfif'
@@ -19,7 +20,15 @@ export default function LoginPage({ currentRoute, onNavigate, onLogin, onCreateA
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-      onLogin?.()
+      const ok = email.trim().toLowerCase() === 'seller@marhas.com' && password === 'seller123'
+      if (ok) {
+        try {
+          localStorage.setItem('auth_user_v1', JSON.stringify({ email, role: 'seller', at: Date.now() }))
+        } catch {}
+        onLogin?.()
+      } else {
+        setError('Invalid credentials. Use seller@marhas.com / seller123')
+      }
     }, 1200)
   }
 
@@ -69,6 +78,7 @@ export default function LoginPage({ currentRoute, onNavigate, onLogin, onCreateA
                 />
               </div>
             </div>
+            {error && <div className="text-danger small mb-2">{error}</div>}
             <div className="d-grid mb-3">
               <button type="submit" className="btn btn-light fw-semibold rounded-pill px-4">
                 {loading ? 'LOGGING IN…' : 'LOGIN'}
@@ -85,7 +95,7 @@ export default function LoginPage({ currentRoute, onNavigate, onLogin, onCreateA
             </div>
           </div>
           <div className="d-flex justify-content-between login-actions">
-            <a href="#" className="text-decoration-none">Forgot Password?</a>
+            <a href="#" className="text-decoration-none" onClick={(e) => { e.preventDefault(); window.location.hash = '#/helpSupport' }}>Forgot Password?</a>
             <a href="#" className="text-decoration-none" onClick={(e) => { e.preventDefault(); onCreateAccount?.() }}>Create Account</a>
           </div>
         </div>

@@ -10,6 +10,23 @@ import CheckoutPage from './components/CheckoutPage.jsx'
 import ConfirmationPage from './components/ConfirmationPage.jsx'
 import NotFoundPage from './components/NotFoundPage.jsx'
 import SearchResultsPage from './components/SearchResultsPage.jsx'
+import SellerDashboard from './components/SellerDashboard.jsx'
+import CustomerDetails from './components/CustomerDetails.jsx'
+import ManageInventory from './components/ManageInventory.jsx'
+import StoreSetting from './components/StoreSetting.jsx'
+import Orders from './components/Orders.jsx'
+import Shipment from './components/Shipment.jsx'
+import ShipmentDetail from './components/ShipmentDetail.jsx'
+import PlatformPartner from './components/PlatformPartner.jsx'
+import PartnerDetail from './components/PartnerDetail.jsx'
+import Feedback from './components/Feedback.jsx'
+import HelpSupport from './components/HelpSupport.jsx'
+import AddNewProduct from './components/AddNewProduct.jsx'
+import OrderDetail from './components/OrderDetail.jsx'
+const profileHandler = (navigate) => () => {
+  try { const user = JSON.parse(localStorage.getItem('auth_user_v1') || 'null'); if (user) { navigate('sellerDashboard'); return } } catch {}
+  navigate('login')
+}
 
 export const routes = {
   landing: {
@@ -17,7 +34,7 @@ export const routes = {
     makeProps: (navigate, view) => ({
       currentRoute: view,
       onNavigate: (v, params) => navigate(v, params),
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onWishlistClick: () => navigate('wishlist'),
       onCartClick: () => navigate('bag'),
     }),
@@ -30,7 +47,7 @@ export const routes = {
       initialGender: params?.gender,
       initialSection: params?.section,
       onViewAll: (slug) => navigate('productListing', { cat: slug }),
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onWishlistClick: () => navigate('wishlist'),
       onCartClick: () => navigate('bag'),
     }),
@@ -63,7 +80,7 @@ export const routes = {
       currentRoute: view,
       onNavigate: (v, p) => navigate(v, p),
       id: params?.id,
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onWishlistClick: () => navigate('wishlist'),
       onCartClick: () => navigate('bag'),
       onViewProduct: (product) => {
@@ -84,7 +101,7 @@ export const routes = {
       q: params?.q,
       cat: params?.cat,
       gender: params?.gender,
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onWishlistClick: () => navigate('wishlist'),
       onCartClick: () => navigate('bag'),
       onBackToListing: () => navigate('productListing'),
@@ -103,7 +120,7 @@ export const routes = {
     makeProps: (navigate, view) => ({
       currentRoute: view,
       onNavigate: (v, p) => navigate(v, p),
-      onLogin: () => navigate('landing'),
+      onLogin: () => navigate('sellerDashboard'),
       onCreateAccount: () => navigate('create'),
     }),
   },
@@ -121,7 +138,7 @@ export const routes = {
     makeProps: (navigate, view) => ({
       currentRoute: view,
       onNavigate: (v, p) => navigate(v, p),
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onBackToHome: () => navigate('home'),
       onCartClick: () => navigate('bag'),
     }),
@@ -131,7 +148,7 @@ export const routes = {
     makeProps: (navigate, view) => ({
       currentRoute: view,
       onNavigate: (v, p) => navigate(v, p),
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onCheckout: () => navigate('checkout'),
     }),
   },
@@ -140,7 +157,7 @@ export const routes = {
     makeProps: (navigate, view) => ({
       currentRoute: view,
       onNavigate: (v, p) => navigate(v, p),
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onWishlistClick: () => navigate('wishlist'),
       onCartClick: () => navigate('bag'),
       onOrderComplete: () => navigate('confirmation'),
@@ -151,10 +168,104 @@ export const routes = {
     makeProps: (navigate, view) => ({
       currentRoute: view,
       onNavigate: (v, p) => navigate(v, p),
-      onProfileClick: () => navigate('login'),
+      onProfileClick: profileHandler(navigate),
       onWishlistClick: () => navigate('wishlist'),
       onCartClick: () => navigate('bag'),
       onContinue: () => navigate('productListing'),
+    }),
+  },
+  sellerDashboard: {
+    component: SellerDashboard,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  customerDetails: {
+    component: CustomerDetails,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  manageInventory: {
+    component: ManageInventory,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  storeSetting: {
+    component: StoreSetting,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  orders: {
+    component: Orders,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  orderDetail: {
+    component: OrderDetail,
+    makeProps: (navigate, view, params) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+      id: params?.id,
+    }),
+  },
+  shipment: {
+    component: Shipment,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  shipmentDetail: {
+    component: ShipmentDetail,
+    makeProps: (navigate, view, params) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+      id: params?.id,
+    }),
+  },
+  platformPartner: {
+    component: PlatformPartner,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  partnerDetail: {
+    component: PartnerDetail,
+    makeProps: (navigate, view, params) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+      id: params?.id,
+    }),
+  },
+  feedback: {
+    component: Feedback,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  helpSupport: {
+    component: HelpSupport,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
+    }),
+  },
+  addProduct: {
+    component: AddNewProduct,
+    makeProps: (navigate, view) => ({
+      currentRoute: view,
+      onNavigate: (v, p) => navigate(v, p),
     }),
   },
   notFound: {

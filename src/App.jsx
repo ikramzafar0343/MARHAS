@@ -1,6 +1,24 @@
 import { useEffect, useState } from 'react'
 import { routes } from './routes.js'
 export default function App() {
+  const protectedViews = new Set([
+    'sellerDashboard',
+    'customerDetails',
+    'manageInventory',
+    'storeSetting',
+    'orders',
+    'orderDetail',
+    'shipment',
+    'shipmentDetail',
+    'platformPartner',
+    'partnerDetail',
+    'feedback',
+    'helpSupport',
+    'addProduct',
+  ])
+  const isAuthed = () => {
+    try { return !!JSON.parse(localStorage.getItem('auth_user_v1') || 'null') } catch { return false }
+  }
   const parseHash = () => {
     const h = window.location.hash || '#/landing'
     const parts = h.replace(/^#\/?/, '').split('?')
@@ -13,7 +31,18 @@ export default function App() {
   useEffect(() => {
     const onHash = () => {
       const next = parseHash()
-      setRouteState(next)
+      const authed = isAuthed()
+      if (!authed && protectedViews.has(next.view)) {
+        const hash = '#/login'
+        if (window.location.hash !== hash) {
+          window.location.hash = hash
+          return
+        } else {
+          setRouteState({ view: 'login', params: {} })
+        }
+      } else {
+        setRouteState(next)
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
     window.addEventListener('hashchange', onHash)
@@ -25,7 +54,13 @@ export default function App() {
     const hash = `#/` + view + (search ? `?${search}` : '')
     if (window.location.hash !== hash) window.location.hash = hash
     else {
-      setRouteState({ view, params })
+      const authed = isAuthed()
+      if (!authed && protectedViews.has(view)) {
+        setRouteState({ view: 'login', params: {} })
+        window.location.hash = '#/login'
+      } else {
+        setRouteState({ view, params })
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
